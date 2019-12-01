@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href="http://fonts.googleapis.com/css?family=Cookie" rel='stylesheet' type='text/css'>
+    <meta http-equiv="refresh" content="10; URL=http://{{host_ip|safe}}:5000/kitchen.html">
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="utf-8">
+    <title>Restaurant Management System</title>
+    <script>
+    function done(item){
+      console.log(item.parentElement.cells[0].innerHTML);
+      var table = document.getElementById("orderTable");
+      var order = $.trim(item.parentElement.cells[0].innerHTML);
+      var number = $.trim(item.parentElement.cells[1].innerHTML);
+      var date = $.trim(item.parentElement.cells[2].innerHTML);
+      var time = $.trim(item.parentElement.cells[3].innerHTML);
+      $.ajax({ type: "POST",
+               dataType: "json",
+               contentType: 'application/json',
+               url: "http://{{host_ip|safe}}:5000/order_ready",
+               data: JSON.stringify({"order": order, "number": number, "date": date, "time":time})
+              });
+      table.deleteRow(item.parentElement.rowIndex);
+    }
+    </script>
+  </head>
+  <body>
+    <div style="float: right; width: 100%; margin-bottom: 10px;">
+      <a class="navbar_button" href="http://{{host_ip|safe}}:5000/cashregister.html"> Cash Register </a>
+      <a class="navbar_button chosen" href="http://{{host_ip|safe}}:5000/kitchen.html"> Kitchen </a>
+      <a class="navbar_button" href="http://{{host_ip|safe}}:5000/waitingroom.html"> Waiting Room </a>
+      <a class="navbar_button" href="http://{{host_ip|safe}}:5000/bookkeeping.html"> Book Keeping </a>
+      <div class="navbar_divider"></div>
+    </div>
+
+    <h2 style="text-align:center">To be Prepared</h3>
+    <table style="background-color:white; margin-left:15%;" id="orderTable" border= 1 width="70%">
+      <tr><th width="40%"> Item </th> <th width="15%"> Numbers </th> <th width="15%"> Date </th>  <th width="15%"> Time </th>   <th width="15%"> State </th></tr>
+    {%for item in orderedItems%}
+      <tr><td width="40%"> {{item[0]}} </td> <td width="15%"> {{item[1]}} </td> <td width="15%"> {{item[2]}} </td>  <td width="15%"> {{item[3]}} </td> <td class="stateCell" style="text-align:center; width:15%;" onclick="done(this)"> &#X2714; </td> </tr>
+    {%endfor%}
+  </table>
+  </body>
+</html>

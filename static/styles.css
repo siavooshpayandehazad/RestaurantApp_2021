@@ -1,0 +1,139 @@
+body{
+  background-color: #ffffd9;
+}
+
+.navbar_button {
+  float:left;
+  padding: 10px 10px 5px 10px;
+  border-radius: 5px 5px 0px 0px;
+  margin-right: 1px;
+  text-decoration:none;
+  color: black;
+  font-weight: bold;
+  background-color: #7fcdbb;
+}
+
+.navbar_button.chosen{
+  background-color: #0868ac;
+  color: white;
+}
+
+.navbar_button.chosen:hover{
+  background-color: #0868ac;
+  color: white;
+}
+
+
+.navbar_button:hover{
+  background-color: #41b6c4;
+}
+
+.navbar_divider{
+  float:left;
+  width:100%;
+  height: 10px;
+  background-color:#0868ac;
+}
+
+.orderListDiv {
+  width:30%;
+  min-height:300px;
+  float: right;
+  background-color:white;
+  border: 3px solid #0868ac;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.orderList{
+  width:100%;
+  min-height:260px;
+  float: right;
+}
+
+.submitButton {
+  width:85px;
+  height:20px;
+  color: white;
+  background-color: #0868ac;
+  float: right;
+  border-radius: 5px;
+  margin-right:10px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.submitButton:hover{
+  background-color: #41b6c4;
+  color: black;
+}
+
+.submitButton:focus {outline:none;}
+
+.stateCell:hover {
+  background-color: #41b6c4;
+  color: white;
+}
+
+.cashRegOrderTable{
+  width:90%;
+  margin-left: 5%;
+  background-color:white;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table th td{
+  border: 3px solid;
+  border-color: #0868ac;
+}
+
+th {
+  background-color: #0868ac;
+  color: white;
+  border: 2px solid #0868ac;
+}
+
+td{
+  border: 2px solid #0868ac
+}
+
+input.foodItem{
+  width:28%;
+  border: 5px solid #ffffd9;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  margin-right:2%;
+}
+
+input:focus {outline:none;}
+
+input.foodItem:hover{
+  border: 5px solid #41b6c4;
+}
+
+h3 {
+  font: 300 40px/0.8 'Cookie', Halvetica,  sans-serif;
+  color: #084081;
+  margin-top:1px;
+  margin-bottom:15px;
+  text-shadow: 4px 4px 3px rgba(0,0,0,0.2);
+}
+
+h2 {
+  font: 300 60px/0.8 'Cookie', Halvetica,  sans-serif;
+  color: #084081;
+  margin-top:1px;
+  margin-bottom:15px;
+  text-shadow: 4px 4px 3px rgba(0,0,0,0.2);
+}
+
+h4 {
+  font: 300 35px/0.8 'Cookie', Halvetica,  sans-serif;
+  color: #084081;
+  margin-top:10px;
+  margin-bottom:15px;
+  text-shadow: 4px 4px 3px rgba(0,0,0,0.2);
+}

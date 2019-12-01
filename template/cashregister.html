@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href="http://fonts.googleapis.com/css?family=Cookie" rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="utf-8">
+    <title>Restaurant Management System</title>
+    <script>
+
+    function addItemtoList(item) {
+      var table = document.getElementById("orderTable");
+      var item = item.src.split("img/")[1].split(".")[0];
+      console.log('adding item to order list', item)
+
+      var row = table.insertRow(-1);
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      var cell4 = row.insertCell(3);
+
+      cell1.innerHTML = item;
+      cell2.innerHTML = "1";
+      cell3.innerHTML = "??";
+      cell4.innerHTML = "x";
+      cell4.style.color="red";
+      cell4.onclick = function(){
+        console.log("removing order", cell3.parentElement.cells[0].innerHTML)
+        document.getElementById("orderTable").deleteRow(cell3.parentElement.rowIndex);
+      };
+    };
+
+    function submitOrder(){
+      var orders = {};
+      console.log("submit button pressed...");
+      var table = document.getElementById("orderTable");
+      var tableSize = table.rows.length;
+      for (i = 1; i < tableSize; i++) {
+          var key = table.rows[i].cells[0].innerHTML;
+          if (! orders.hasOwnProperty(key)){
+              orders[key] = parseInt(table.rows[i].cells[1].innerHTML, 10);
+          }else{
+              orders[key] += parseInt(table.rows[i].cells[1].innerHTML, 10);
+          }
+      };
+      var today = new Date();
+      var date = today.getFullYear()+'-'+("0" + (today.getMonth() + 1)).slice(-2)+'-'+("0" + today.getDate()).slice(-2);
+      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      orders["date"] = date;
+      orders["time"] = time;
+      $.ajax({ type: "POST",
+               dataType: "json",
+               contentType: 'application/json',
+               url: "http://{{host_ip|safe}}:5000/save_order",
+               data: JSON.stringify(orders)
+              });
+      console.log("orders:", orders);
+      for (j = 1; j < tableSize; j++) {
+        table.deleteRow(-1);
+      }
+      var sumVal = document.getElementById("sumValue")
+      sumVal.innerHTML=0;
+    };
+    </script>
+  </head>
+  <body>
+
+    <div style="float: right; width: 100%; margin-bottom: 10px;">
+      <a class="navbar_button chosen" href="http://{{host_ip|safe}}:5000/cashregister.html"> Cash Register </a>
+      <a class="navbar_button" href="http://{{host_ip|safe}}:5000/kitchen.html"> Kitchen </a>
+      <a class="navbar_button" href="http://{{host_ip|safe}}:5000/waitingroom.html"> Waiting Room </a>
+      <a class="navbar_button" href="http://{{host_ip|safe}}:5000/bookkeeping.html"> Book Keeping </a>
+      <div class="navbar_divider"></div>
+    </div>
+
+    <div style="width:68%; float: left;">
+    {%for item in foodList%}
+      <input class="foodItem" type="image" onclick="addItemtoList(this)" src="{{url_for('static', filename = 'img/'+item+'.png')}}" />
+    {%endfor%}
+    </div>
+
+    <div class="orderListDiv">
+      <h4>Order List</h4>
+      <div class="orderList">
+        <table class="cashRegOrderTable" id="orderTable">
+          <tr><th width="70%"> items </th> <th> numbers </th> <th> price </th> <th>  </th></tr>
+        </table>
+      </div>
+      <div>SUM: <span id="sumValue"> 0 </span> Kr</div>
+      <button type="button" class="submitButton" onclick="submitOrder()">Submit</button>
+    <div>
+  </body>
+</html>
