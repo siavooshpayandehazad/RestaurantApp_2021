@@ -51,7 +51,7 @@
       $.ajax({ type: "POST",
                dataType: "json",
                contentType: 'application/json',
-               url: "http://{{host_ip|safe}}:5000/save_order",
+               url: "/save_order",
                data: JSON.stringify(orders)
               });
       console.log("orders:", orders);
@@ -66,10 +66,10 @@
   <body>
 
     <div style="float: right; width: 100%; margin-bottom: 10px;">
-      <a class="navbar_button chosen" href="http://{{host_ip|safe}}:5000/cashregister.html"> Cash Register </a>
-      <a class="navbar_button" href="http://{{host_ip|safe}}:5000/kitchen.html"> Kitchen </a>
-      <a class="navbar_button" href="http://{{host_ip|safe}}:5000/waitingroom.html"> Waiting Room </a>
-      <a class="navbar_button" href="http://{{host_ip|safe}}:5000/bookkeeping.html"> Book Keeping </a>
+      <a class="navbar_button chosen" href="/cashregister.html"> Cash Register </a>
+      <a class="navbar_button" href="/kitchen.html"> Kitchen </a>
+      <a class="navbar_button" href="/waitingroom.html"> Waiting Room </a>
+      <a class="navbar_button" href="/bookkeeping.html"> Book Keeping </a>
       <div class="navbar_divider"></div>
     </div>
 

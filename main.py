@@ -106,7 +106,8 @@ class bookkeeping(Resource):
 
 @app.route('/save_order', methods=['POST'])
 def save_order():
-    req_data = request.get_json()
+    req_data = eval(request.data)
+    print(req_data)
     for item in req_data:
         if item not in ["date", "time"]:
             DB_cureser.execute("""SELECT * FROM priceTable WHERE item = ?""", (item, ))
@@ -119,7 +120,7 @@ def save_order():
 
 @app.route('/order_ready', methods=['POST'])
 def order_ready():
-    req_data = request.get_json()
+    req_data = eval(request.data)
     print(req_data)
     DB_cureser.execute("""DELETE FROM kitchenOrders WHERE orderedItem = ? and number = ? and date =? and time = ? and state = ?""", (req_data["order"], req_data["number"], req_data["date"], req_data["time"], "incomplete"))
     DB_connection.commit()
@@ -129,7 +130,7 @@ def order_ready():
 
 @app.route('/order_taken', methods=['POST'])
 def order_taken():
-    req_data = request.get_json()
+    req_data = eval(request.data)
     print(req_data)
     DB_cureser.execute("""DELETE FROM kitchenOrders WHERE orderedItem = ? and number = ? and date =? and time = ? and state = ?""", (req_data["order"], req_data["number"], req_data["date"], req_data["time"], "complete"))
     DB_connection.commit()
@@ -138,7 +139,7 @@ def order_taken():
 
 @app.route('/auth', methods=['POST'])
 def auth():
-    req_data = request.get_json()
+    req_data = eval(request.data)
     print(req_data)
     DB_cureser.execute("""SELECT * FROM user_DB WHERE user == ? and pass = ? """, (req_data["user"] , req_data["pass"], ))
     userData = DB_cureser.fetchall()
@@ -149,7 +150,7 @@ def auth():
 
 @app.route('/get_price', methods=['POST'])
 def get_price():
-    req_data = request.get_json()
+    req_data = eval(request.data)
     print(req_data)
     DB_cureser.execute("""SELECT * FROM priceTable WHERE item = ?""", (req_data["item"], ))
     price = DB_cureser.fetchall()[0][1]
