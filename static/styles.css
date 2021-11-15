@@ -1,52 +1,3 @@
-body{
-  background-color: #ffffd9;
-}
-
-
-
-.orderListDiv {
-  width:100%;
-  min-height:300px;
-  float: right;
-  background-color:white;
-  border: 3px solid #0868ac;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.orderList{
-  width:100%;
-  min-height:260px;
-  float: right;
-}
-
-.submitButton {
-  width:85px;
-  height:40px;
-  color: white;
-  background-color: #0868ac;
-  float: right;
-  border-radius: 5px;
-  margin-right:10px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.submitButton:hover{
-  background-color: #41b6c4;
-  color: black;
-}
-
-.submitButton:focus {outline:none;}
-
-
-
-.cashRegOrderTable{
-  width:90%;
-  margin-left: 5%;
-  background-color:white;
-}
-
 table {
   border-collapse: collapse;
 }
@@ -65,21 +16,3 @@ th {
 td{
   border: 2px solid #0868ac
 }
-
-input.foodItem{
-  width:28%;
-  border: 5px solid #ffffd9;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  margin-right:2%;
-}
-
-input:focus {outline:none;}
-
-input.foodItem:hover{
-  border: 5px solid #41b6c4;
-}
-
- 
-
- 

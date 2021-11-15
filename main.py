@@ -113,7 +113,7 @@ class bookkeeping(Resource):
 
 @app.route('/save_order', methods=['POST'])
 def save_order():
-    if bool(random.getrandbits(1)):
+    if random.randrange(1,10)<5:
         time.sleep(2)
         return "Failed", 400
     else:
