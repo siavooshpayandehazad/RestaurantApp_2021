@@ -3,7 +3,8 @@ import sqlite3
 import datetime
 import sys, os
 import socket
-
+import time
+import random
 from flask import Flask
 from flask import request, jsonify, redirect
 from flask_restful import abort, Api, Resource
@@ -38,9 +39,10 @@ priceDict = {"veggiefajitas": "86", "meatballs": "78","cinnamonroll": "15",  "co
 kitchenList = ["veggiefajitas", "meatballs"]
 
 app = Flask(__name__, template_folder='template', static_url_path='/static')
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 api = Api(app)
 
-print("-"*10)
+
 try:
     host_name = socket.gethostname()
     host_ip = socket.gethostbyname(host_name)
@@ -49,11 +51,14 @@ try:
     print("-"*10)
 except:
     host_ip = "localhost"
+
+
 def getMonthsEnd(month, year):
     if month < 12:
         return (datetime.datetime.strptime(f"{year}-{month+1}-01", '%Y-%m-%d')-datetime.timedelta(days=1)).date()
     else:
         return (datetime.datetime.strptime(f"{year+1}-01-01", '%Y-%m-%d')-datetime.timedelta(days=1)).date()
+
 
 class kitchen(Resource):
     def get(self):
@@ -70,6 +75,7 @@ class cashReg(Resource):
         foodList.remove("free-coffee")
         return make_response(render_template('cashregister.html', foodList = foodList, host_ip=host_ip),200,headers)
 
+
 class waitingroom(Resource):
     def get(self):
         headers = {'Content-Type': 'text/html'}
@@ -78,6 +84,7 @@ class waitingroom(Resource):
         DB_cureser.execute("""SELECT * FROM kitchenOrders WHERE date == ? and state = ? """, ( datetime.date.today(), "complete", ))
         ready = DB_cureser.fetchall()
         return make_response(render_template('waitingroom.html', waiting_list=waiting, ready_list=ready, host_ip=host_ip),200,headers)
+
 
 class bookkeeping(Resource):
     def get(self):
@@ -106,17 +113,27 @@ class bookkeeping(Resource):
 
 @app.route('/save_order', methods=['POST'])
 def save_order():
-    req_data = eval(request.data)
-    print(req_data)
-    for item in req_data:
-        if item not in ["date", "time"]:
-            DB_cureser.execute("""SELECT * FROM priceTable WHERE item = ?""", (item, ))
-            price = DB_cureser.fetchall()[0][1]
-            DB_cureser.execute("""INSERT INTO orderTable VALUES(?, ?, ?, ?, ?)""", (item, req_data[item], req_data["date"], req_data["time"], price))
-            if item in kitchenList:
-                DB_cureser.execute("""INSERT INTO kitchenOrders VALUES(?, ?, ?, ?, ?)""", (item, req_data[item], req_data["date"], req_data["time"], "incomplete"))
-        DB_connection.commit()
-    return "Done", 200
+    if bool(random.getrandbits(1)):
+        time.sleep(2)
+        return "Failed", 400
+    else:
+        try:
+            req_data = eval(request.data)
+            print(req_data)
+            for item in req_data:
+                if item not in ["date", "time"]:
+                    DB_cureser.execute("""SELECT * FROM priceTable WHERE item = ?""", (item, ))
+                    price = DB_cureser.fetchall()[0][1]
+                    DB_cureser.execute("""INSERT INTO orderTable VALUES(?, ?, ?, ?, ?)""", (item, req_data[item], req_data["date"], req_data["time"], price))
+                    if item in kitchenList:
+                        DB_cureser.execute("""INSERT INTO kitchenOrders VALUES(?, ?, ?, ?, ?)""", (item, req_data[item], req_data["date"], req_data["time"], "incomplete"))
+                DB_connection.commit()
+            time.sleep(2)
+            return "Done", 200
+        except Exception as err:
+            print(err)
+            return "Failed", 400
+
 
 @app.route('/order_ready', methods=['POST'])
 def order_ready():
@@ -127,6 +144,7 @@ def order_ready():
     DB_cureser.execute("""INSERT INTO kitchenOrders  VALUES(?, ?, ?, ?, ?)""", (req_data["order"], req_data["number"], req_data["date"], req_data["time"], "complete"))
     DB_connection.commit()
     return "Done", 200
+
 
 @app.route('/order_taken', methods=['POST'])
 def order_taken():
@@ -148,14 +166,17 @@ def auth():
     else:
         return jsonify({"result": "fail"}), 200
 
+
 @app.route('/get_price', methods=['POST'])
 def get_price():
+    print(request.data)
     req_data = eval(request.data)
     print(req_data)
     DB_cureser.execute("""SELECT * FROM priceTable WHERE item = ?""", (req_data["item"], ))
     price = DB_cureser.fetchall()[0][1]
-    print(price)
+    print(req_data["item"], price)
     return jsonify({"item": req_data["item"], "price": price}), 200
+
 
 api.add_resource(cashReg, '/cashregister.html')
 api.add_resource(bookkeeping, '/bookkeeping.html')
