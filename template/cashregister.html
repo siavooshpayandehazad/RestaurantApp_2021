@@ -85,15 +85,12 @@
 	      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 	      orders["date"] = date;
 	      orders["time"] = time;
-              overlay = document.getElementById("overlay")
-              overlay.style.display="block";
 	      $.ajax({ type: "POST",
 		       contentType: 'application/json',
 		       url: "/save_order",
 		       data: JSON.stringify(orders),
 		       success: function(data) {
                   console.log("post successful", data);
-              	  overlay.style.display="none";
                   for (j = 1; j < tableSize; j++) {
                 	   table.deleteRow(-1);
                   }
@@ -105,7 +102,6 @@
                   },
            error: function(data) {
               console.log("post not successful", data);
-              overlay.style.display="none";
               err_msg = document.getElementById("err_msg");
               err_msg.style.color="red"
               err_msg.textContent="Failed to submit order!"
@@ -129,22 +125,6 @@
     input.foodItem:hover{
       border: 5px solid #41b6c4;
     }
-
-    .row-overlay{
-        display:none;
-        position:absolute;
-        top:0;
-        left:0;
-        z-index:1;
-        height:100%;
-       width:100%;
-    }
-    .col-overlay{
-       background-color: rgb(0,0,0,0.2);
-       height:100%;
-
-    }
-
     .orderListDiv {
       width:100%;
       min-height:300px;
@@ -234,12 +214,7 @@
 	            </div>
 		</div>
 	</div>
-        <div class="row row-overlay" id="overlay">
-           <div class="col-sm-12 col-overlay text-center">
-             <div class="spinner-border" style = "margin-top: 40vh"role="status">
-             </div>
-           </div>
-        </div>
+
   </div>
 
 
