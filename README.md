@@ -13,7 +13,7 @@ python3 main.py
 ```
 
 
-#Your Task
+# Your Task
 
 Make an overlay screen with a small spinner to block the view for cash register
 while the user waits for server to respond.
