@@ -31,9 +31,6 @@ DB_cureser.execute("""CREATE TABLE if not exists kitchenOrders (
                     time text,
                     state text)""")
 
-DB_cureser.execute("""CREATE TABLE if not exists user_DB (
-                    user text,
-                    pass text)""")
 
 priceDict = {"veggiefajitas": "86", "meatballs": "78","cinnamonroll": "15",  "coffee": "10", "free-coffee": "0"}
 kitchenList = ["veggiefajitas", "meatballs"]
@@ -155,18 +152,6 @@ def order_taken():
     return "Done", 200
 
 
-@app.route('/auth', methods=['POST'])
-def auth():
-    req_data = eval(request.data)
-    print(req_data)
-    DB_cureser.execute("""SELECT * FROM user_DB WHERE user == ? and pass = ? """, (req_data["user"] , req_data["pass"], ))
-    userData = DB_cureser.fetchall()
-    if len(userData)>0:
-        return jsonify({"result": "pass"}), 200
-    else:
-        return jsonify({"result": "fail"}), 200
-
-
 @app.route('/get_price', methods=['POST'])
 def get_price():
     print(request.data)
@@ -193,12 +178,6 @@ def setup_priceTable():
         DB_cureser.execute("""INSERT INTO priceTable VALUES(?, ?)""", (item, priceDict[item]))
     DB_connection.commit()
 
-    DB_cureser.execute("DROP TABLE user_DB")
-    DB_cureser.execute("""CREATE TABLE user_DB (
-                        user text,
-                        pass text)""")
-    DB_cureser.execute("""INSERT INTO user_DB VALUES(?, ?)""", ("user", "pass"))
-    DB_connection.commit()
 
 if __name__ == '__main__':
     setup_priceTable()
