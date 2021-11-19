@@ -15,5 +15,5 @@ python3 main.py
 
 # Your Task
 
-Make an overlay screen with a small spinner to block the view for cash register
-while the user waits for server to respond.
+Add the following feature to the cash-register page:
+* Make an overlay screen with a small spinner to block the view for cash register while the user waits for server to respond. you can activate/deactivate the overlay in `submitOrder` function.
