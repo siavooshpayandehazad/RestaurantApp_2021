@@ -18,5 +18,7 @@ Add the following feature to the app:
   * write a new API for the app, which can update the price of the items in the database.
     * investigate how the price of the items are setup in `priceTable` in `main.py`
     * investigate how the APIs work in `main.py`
-    * setup your API and test it. 
+    * setup your API and test it.
     * you can use `sqlitebrowser` to look into your databse.
+
+If you want to continue with your task you can setup a new tab for the UI and add a feature for updating the price through the UI using your API.
