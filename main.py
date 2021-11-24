@@ -13,8 +13,9 @@ class main(Resource):
         return make_response(render_template('main.html', arg1="argument 1", arg2="argument 2"),200,headers)
 
     def post(self):
-        req_data = request.get_json()
-        print(req_data)
+        print("here in post method")
+        req_data = request.json
+        print("req_data", req_data)
         result = "results"
         """
         do some things here
@@ -25,7 +26,8 @@ class main(Resource):
 @app.route('/API', methods=['POST'])
 def API():
     print("here in API")
-
+    req_data = request.json
+    print("req_data", req_data)
     return "data", 200
 
 
